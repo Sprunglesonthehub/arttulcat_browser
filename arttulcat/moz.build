@@ -1,0 +1,15 @@
+# /home/buildarttulcatforlinux/arttulcat_build/arttulcat_browser/arttulcat/moz.build
+
+# Define sources if any, otherwise leave empty or specify subdirectories
+# If this is the main application, it might include:
+# FILES = ['application.xul', 'main.js']
+
+# If it has subdirectories for various components:
+# DIRS = [
+#     'content',
+#     'skin',
+#     'modules',
+# ]
+
+# For now, just an empty file might suffice to get past *this* error,
+# but the build will likely fail later without actual content.

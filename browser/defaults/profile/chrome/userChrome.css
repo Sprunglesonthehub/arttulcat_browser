@@ -1,0 +1,359 @@
+/*
+ * ArttulOS Themed Purple Firefox userChrome.css
+ * Author: Your AI Assistant
+ * Date: 2023-10-27
+ * Description: A gorgeous, dark, and purple-accented Firefox UI,
+ *              inspired by the sleek aesthetic of ArttulOS.
+ *              Uses CSS variables for easy color customization.
+ *
+ * Installation:
+ * 1. This file is intended to be bundled with the ArttulCat browser.
+ * 2. `toolkit.legacyUserProfileCustomizations.stylesheets` must be enabled.
+ *    (This is handled by a previous patch in this build process).
+ */
+
+@namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul");
+
+/* --- 1. Global CSS Variables (ArttulOS Color Palette) --- */
+:root {
+    /* ArttulOS Base Colors */
+    --arttulos-bg-main: #1A1A2E; /* Deep charcoal / nearly black */
+    --arttulos-bg-secondary: #2B2B40; /* Slightly lighter for elements like inactive tabs, fields */
+    --arttulos-text-primary: #F0F0F0; /* Bright white for primary text */
+    --arttulos-text-secondary: #B0B0B0; /* Muted gray for secondary text/icons */
+    --arttulos-border-color: #3A3A50; /* Subtle border for separation */
+
+    /* ArttulOS Purple Accents */
+    --arttulos-accent-purple: #A020F0; /* Main vibrant purple */
+    --arttulos-accent-purple-light: #C080FF; /* Lighter purple for highlights/hover */
+    --arttulos-accent-purple-dark: #6A1BA0; /* Darker purple for shadows/active */
+
+    /* ArttulOS Interaction States */
+    --arttulos-hover-bg: rgba(160, 32, 240, 0.2); /* Semi-transparent purple for hover */
+    --arttulos-active-bg: rgba(160, 32, 240, 0.4); /* More opaque purple for active */
+    --arttulos-focus-ring-color: var(--arttulos-accent-purple-light);
+
+    /* ArttulOS UI Properties */
+    --arttulos-border-radius: 5px; /* Subtle rounding for elements */
+    --arttulos-transition-speed: 0.2s ease-in-out; /* Smooth transitions */
+
+    /* Override Firefox LWT variables for consistency */
+    --lwt-toolbar-field-background-color: var(--arttulos-bg-secondary) !important;
+    --lwt-toolbar-field-border-color: var(--arttulos-border-color) !important;
+    --lwt-toolbar-field-focus-border-color: var(--arttulos-accent-purple) !important;
+    --lwt-toolbar-field-color: var(--arttulos-text-primary) !important;
+    --lwt-toolbar-field-focus-color: var(--arttulos-text-primary) !important;
+    --lwt-toolbar-icon-fill: var(--arttulos-text-primary) !important;
+    --lwt-toolbar-text: var(--arttulos-text-primary) !important;
+    --lwt-toolbar-field-background-hover: var(--arttulos-hover-bg) !important;
+}
+
+/* --- 2. Main Toolbars (Navigation, Tabs, Bookmarks) --- */
+#navigator-toolbox,
+#toolbar-menubar,
+#TabsToolbar,
+#nav-bar,
+#PersonalToolbar,
+#bookmarks-toolbar-field {
+    background-color: var(--arttulos-bg-main) !important;
+    border-color: transparent !important; /* Hide default borders */
+    box-shadow: none !important;
+}
+
+/* Ensure text and icons adopt the primary color */
+toolbar .toolbarbutton-icon,
+.toolbarbutton-text,
+toolbarbutton .toolbarbutton-badge-stack {
+    color: var(--arttulos-text-primary) !important;
+    fill: var(--arttulos-text-primary) !important;
+}
+/* Icons that are part of toolbarbuttons usually need fill */
+toolbarbutton .icon, .tab-icon {
+    fill: var(--arttulos-text-primary) !important;
+}
+
+/* --- 3. URL Bar and Search Bar --- */
+#urlbar-background,
+#searchbar .searchbar-textbox {
+    background-color: var(--arttulos-bg-secondary) !important;
+    border: 1px solid var(--arttulos-border-color) !important;
+    border-radius: var(--arttulos-border-radius) !important;
+    box-shadow: none !important;
+    transition: border-color var(--arttulos-transition-speed), box-shadow var(--arttulos-transition-speed);
+}
+
+#urlbar-input, #searchbar input {
+    color: var(--arttulos-text-primary) !important;
+}
+
+/* Focus state for URL bar */
+#urlbar[focused="true"] > #urlbar-background,
+#searchbar[focused="true"] .searchbar-textbox {
+    border-color: var(--arttulos-accent-purple) !important;
+    box-shadow: 0 0 0 1px var(--arttulos-accent-purple) !important;
+}
+
+/* Identity box (lock icon, etc.) */
+#identity-box {
+    color: var(--arttulos-text-primary) !important;
+}
+
+/* --- 4. Tabs Styling --- */
+.tabbrowser-tab {
+    margin: 0 2px !important;
+    min-width: 80px !important; /* Give tabs a consistent minimum width */
+    max-width: 200px !important;
+    border-radius: var(--arttulos-border-radius) var(--arttulos-border-radius) 0 0 !important;
+    transition: all var(--arttulos-transition-speed);
+}
+
+/* Background for inactive tabs */
+.tab-background {
+    background-color: var(--arttulos-bg-secondary) !important;
+    border: 1px solid var(--arttulos-border-color) !important;
+    border-bottom: none !important; /* Hide bottom border for inactive tabs */
+    box-shadow: none !important;
+    border-radius: var(--arttulos-border-radius) var(--arttulos-border-radius) 0 0 !important;
+    transition: background-color var(--arttulos-transition-speed), border-color var(--arttulos-transition-speed);
+}
+
+/* Active tab background */
+.tab-background[selected="true"] {
+    background-color: var(--arttulos-bg-main) !important; /* Matches toolbar for seamless look */
+    border-color: var(--arttulos-accent-purple) !important;
+    border-bottom-color: var(--arttulos-bg-main) !important; /* Blends with the toolbar background */
+    box-shadow: 0 -2px 5px rgba(0,0,0,0.3), 0 0 5px rgba(0,0,0,0.1) inset !important; /* Subtle inner shadow */
+}
+
+/* Hover effect for inactive tabs */
+.tab-background:hover:not([selected="true"]) {
+    background-color: var(--arttulos-hover-bg) !important;
+    border-color: var(--arttulos-accent-purple-dark) !important;
+}
+
+/* Tab content (label, icon) */
+.tab-label, .tab-icon {
+    opacity: 1 !important; /* Ensure visibility */
+    filter: none !important; /* Remove any default dimming */
+    color: var(--arttulos-text-primary) !important;
+}
+
+/* Tab close button */
+.tab-close-button {
+    fill: var(--arttulos-text-secondary) !important;
+    border-radius: var(--arttulos-border-radius) !important;
+    padding: 2px !important;
+    transition: background-color var(--arttulos-transition-speed), fill var(--arttulos-transition-speed);
+}
+.tab-close-button:hover {
+    background-color: var(--arttulos-accent-purple-dark) !important;
+    fill: var(--arttulos-text-primary) !important;
+}
+
+/* New tab button */
+#tabs-newtab-button {
+    fill: var(--arttulos-text-primary) !important;
+    background-color: transparent !important;
+    border-radius: var(--arttulos-border-radius) !important;
+    transition: background-color var(--arttulos-transition-speed);
+}
+#tabs-newtab-button:hover {
+    background-color: var(--arttulos-hover-bg) !important;
+}
+
+/* --- 5. Toolbar Buttons (General) --- */
+toolbarbutton:not(#star-button):not(#page-action-buttons),
+#downloads-button,
+#history-panelmenu,
+#bookmarks-menu-button {
+    border-radius: var(--arttulos-border-radius) !important;
+    padding: 4px 6px !important;
+    transition: background-color var(--arttulos-transition-speed), border-color var(--arttulos-transition-speed);
+    background-color: transparent !important; /* Start transparent */
+    border: 1px solid transparent !important; /* Transparent border by default */
+}
+
+toolbarbutton:not(#star-button):not(#page-action-buttons):hover,
+#downloads-button:hover,
+#history-panelmenu:hover,
+#bookmarks-menu-button:hover {
+    background-color: var(--arttulos-hover-bg) !important;
+    border-color: var(--arttulos-accent-purple-dark) !important;
+}
+
+toolbarbutton:not(#star-button):not(#page-action-buttons):active,
+toolbarbutton[open="true"]:not(#star-button):not(#page-action-buttons) {
+    background-color: var(--arttulos-active-bg) !important;
+    border-color: var(--arttulos-accent-purple) !important;
+}
+
+/* Specific button styles (e.g., Star button, Page Action Buttons) */
+#star-button,
+#page-action-buttons,
+#unified-extensions-button {
+    --toolbarbutton-icon-fill: var(--arttulos-text-primary) !important;
+    --toolbarbutton-hover-background: var(--arttulos-hover-bg) !important;
+    --toolbarbutton-active-background: var(--arttulos-active-bg) !important;
+    --toolbarbutton-border-radius: var(--arttulos-border-radius) !important;
+}
+
+/* --- 6. Menus and Popups (Context Menus, Bookmarks Menu, etc.) --- */
+panel, menupopup {
+    background-color: var(--arttulos-bg-secondary) !important;
+    border: 1px solid var(--arttulos-border-color) !important;
+    border-radius: var(--arttulos-border-radius) !important;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.5) !important; /* Deeper shadow for popups */
+    padding: 5px !important; /* Internal padding for panels/menus */
+}
+
+menuitem, menulist, menu {
+    color: var(--arttulos-text-primary) !important;
+    background-color: transparent !important;
+    border-radius: var(--arttulos-border-radius) !important; /* Apply radius to menu items */
+    transition: background-color var(--arttulos-transition-speed);
+    padding: 6px 10px !important; /* Padding for menu items */
+}
+
+menuitem:hover:not([disabled="true"]),
+menu[_moz-locale-dir="ltr"]:hover:not([disabled="true"]) {
+    background-color: var(--arttulos-hover-bg) !important;
+    color: var(--arttulos-text-primary) !important;
+}
+
+menuitem[disabled="true"],
+menu[disabled="true"] {
+    opacity: 0.6 !important;
+}
+
+menuseparator {
+    background-color: var(--arttulos-border-color) !important;
+    border-color: var(--arttulos-border-color) !important; /* For older versions */
+    margin: 4px 0 !important;
+    height: 1px !important;
+    min-height: 1px !important;
+    border-top: none !important;
+    border-bottom: none !important;
+}
+
+/* --- 7. Scrollbars --- */
+/* (Note: Scrollbar styling can be inconsistent across OS/Firefox versions) */
+scrollbar {
+    -moz-appearance: none !important;
+    background-color: var(--arttulos-bg-secondary) !important;
+    border-radius: var(--arttulos-border-radius) !important;
+    width: 12px !important; /* Adjust width as needed */
+    height: 12px !important; /* Adjust height for horizontal scrollbar */
+}
+
+scrollbar thumb {
+    -moz-appearance: none !important;
+    background-color: var(--arttulos-accent-purple-dark) !important;
+    border-radius: var(--arttulos-border-radius) !important;
+    border: 2px solid var(--arttulos-bg-secondary) !important; /* Gives visual "padding" to thumb */
+}
+
+scrollbar thumb:hover {
+    background-color: var(--arttulos-accent-purple) !important;
+}
+
+/* Hide scrollbar buttons for a cleaner look */
+scrollbarbutton {
+    display: none !important;
+}
+
+/* --- 8. Findbar --- */
+#FindToolbar {
+    background-color: var(--arttulos-bg-secondary) !important;
+    border-top: 1px solid var(--arttulos-border-color) !important;
+    color: var(--arttulos-text-primary) !important;
+    box-shadow: none !important;
+}
+
+#find-input {
+    background-color: var(--arttulos-bg-main) !important;
+    border: 1px solid var(--arttulos-border-color) !important;
+    border-radius: var(--arttulos-border-radius) !important;
+    color: var(--arttulos-text-primary) !important;
+}
+
+#find-input:focus {
+    border-color: var(--arttulos-accent-purple) !important;
+    box-shadow: 0 0 0 1px var(--arttulos-accent-purple) !important;
+}
+
+/* --- 9. Notification Popups (e.g., Permissions, Downloads) --- */
+.popup-notification {
+    background-color: var(--arttulos-bg-secondary) !important;
+    border: 1px solid var(--arttulos-border-color) !important;
+    border-radius: var(--arttulos-border-radius) !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.4) !important;
+    color: var(--arttulos-text-primary) !important;
+}
+
+.popup-notification .button {
+    background-color: var(--arttulos-accent-purple-dark) !important;
+    color: var(--arttulos-text-primary) !important;
+    border-radius: var(--arttulos-border-radius) !important;
+    border: 1px solid var(--arttulos-accent-purple) !important;
+    transition: background-color var(--arttulos-transition-speed);
+}
+.popup-notification .button:hover {
+    background-color: var(--arttulos-accent-purple) !important;
+}
+
+/* --- 10. Autocomplete/Dropdowns (URL bar, search bar suggestions) --- */
+.urlbarView-row {
+    background-color: transparent !important;
+    color: var(--arttulos-text-primary) !important;
+    border-radius: var(--arttulos-border-radius) !important;
+    transition: background-color var(--arttulos-transition-speed);
+}
+
+.urlbarView-row:hover:not([selected="true"]) {
+    background-color: var(--arttulos-hover-bg) !important;
+}
+
+.urlbarView-row[selected="true"] {
+    background-color: var(--arttulos-active-bg) !important;
+    color: var(--arttulos-text-primary) !important;
+}
+
+.urlbarView-type-icon {
+    fill: var(--arttulos-text-secondary) !important;
+}
+
+/* --- 11. Customization Button and Toolbar Overflow --- */
+#customization-button, #PanelUI-button {
+    --lwt-toolbarbutton-hover-background: var(--arttulos-hover-bg) !important;
+    --lwt-toolbarbutton-active-background: var(--arttulos-active-bg) !important;
+    --lwt-toolbarbutton-icon-fill: var(--arttulos-text-primary) !important;
+    border-radius: var(--arttulos-border-radius) !important;
+}
+
+#PanelUI-multiView { /* The main menu panel */
+    background-color: var(--arttulos-bg-secondary) !important;
+    border: 1px solid var(--arttulos-border-color) !important;
+    border-radius: var(--arttulos-border-radius) !important;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.5) !important;
+}
+
+.panel-subview-header, .panel-subview-body {
+    background-color: transparent !important;
+}
+
+.panel-header-main-box {
+    background-color: var(--arttulos-bg-main) !important; /* Header of main menu */
+    border-radius: var(--arttulos-border-radius) var(--arttulos-border-radius) 0 0 !important;
+    border-bottom: 1px solid var(--arttulos-border-color) !important;
+    padding-bottom: 5px !important;
+}
+
+.panel-header-main-box .panel-title {
+    color: var(--arttulos-text-primary) !important;
+}
+.panel-header-main-box .panel-close-button {
+    fill: var(--arttulos-text-primary) !important;
+}
+.panel-header-main-box .panel-close-button:hover {
+    background-color: var(--arttulos-accent-purple-dark) !important;
+}
